@@ -1,0 +1,76 @@
+# AI Content Detection System Configuration
+
+# Model Configuration
+models:
+  text:
+    roberta:
+      model_name: "roberta-base"
+      max_length: 512
+      num_labels: 2
+    gpt2_perplexity:
+      model_name: "gpt2"
+      stride: 512
+    ensemble_weights:
+      roberta: 0.7
+      perplexity: 0.3
+  
+  image:
+    efficientnet:
+      model_name: "efficientnet-b0"
+      input_size: 224
+      num_classes: 2
+    frequency_cnn:
+      input_channels: 3
+      num_classes: 2
+    ensemble_weights:
+      efficientnet: 0.6
+      frequency_cnn: 0.4
+
+# API Configuration
+api:
+  host: "0.0.0.0"
+  port: 8000
+  max_file_size: 10485760  # 10MB
+  allowed_image_types: ["jpg", "jpeg", "png", "webp"]
+  rate_limit: 100  # requests per minute
+
+# Training Configuration
+training:
+  batch_size: 32
+  learning_rate: 2e-5
+  num_epochs: 5
+  warmup_steps: 500
+  weight_decay: 0.01
+  save_steps: 1000
+  eval_steps: 500
+
+# Data Configuration
+data:
+  text:
+    max_samples_per_source: 50000
+    min_text_length: 100
+    max_text_length: 1000
+  image:
+    max_samples_per_source: 20000
+    target_size: [224, 224]
+    augmentation: true
+
+# Inference Configuration
+inference:
+  device: "auto"  # auto, cpu, cuda
+  batch_size: 8
+  max_latency_ms: 500
+  confidence_threshold: 0.5
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  log_file: "logs/ai_detector.log"
+
+# Paths
+paths:
+  models: "models/"
+  data: "data/"
+  logs: "logs/"
+  cache: "cache/"
